@@ -12,6 +12,7 @@ import { useColorScheme } from '@/hooks/use-color-scheme';
 import { useThemeColor } from '@/hooks/use-theme-color';
 
 const HEADER_HEIGHT = 250;
+const SCROLL_THROTTLE = 16;
 
 type Props = PropsWithChildren<{
   headerImage: ReactElement;
@@ -48,7 +49,7 @@ export default function ParallaxScrollView({
     <Animated.ScrollView
       ref={scrollRef}
       style={{ backgroundColor, flex: 1 }}
-      scrollEventThrottle={16}>
+      scrollEventThrottle={SCROLL_THROTTLE}>
       <Animated.View
         style={[
           styles.header,
