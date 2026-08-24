@@ -152,8 +152,8 @@ export default function HomeScreen() {
 
   const handleQuickTest = async () => {
     try {
-      await scheduleTestAlarm(5);
-      Alert.alert('⏱️ Test Alarm Set!', '5 seconds mein notification aayegi. Phone lock karke ya background me check karein!');
+      await scheduleTestAlarm(10);
+      Alert.alert('⏱️ Test Alarm Set!', '10 seconds mein notification aayegi. Phone lock karke ya background me check karein!');
       await loadAlarms();
     } catch (e: any) {
       Alert.alert('Error', e?.message || 'Test trigger failed');

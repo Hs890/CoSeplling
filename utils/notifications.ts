@@ -189,9 +189,10 @@ export async function scheduleAlarm(config: AlarmConfig): Promise<string[]> {
 }
 
 /**
- * 5-second test alarm
+ * Quick test alarm schedule karta hai
+ * @param seconds - Kitne seconds baad fire hogi (default: 10)
  */
-export async function scheduleTestAlarm(seconds = 5): Promise<string> {
+export async function scheduleTestAlarm(seconds = 10): Promise<string> {
   const channelId = Platform.OS === 'android' ? 'alarm-channel' : undefined;
   return await Notifications.scheduleNotificationAsync({
     content: {
