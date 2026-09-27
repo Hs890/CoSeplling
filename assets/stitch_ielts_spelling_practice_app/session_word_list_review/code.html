@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+
+<html lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/><meta content="mobile_stack" name="shell-type"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet"/><style>@layer base{html,body{width:100vw;margin:0;padding:0;background-color:#f8f9ff;}body{overscroll-behavior:none;min-height:100vh;}.pb-safe{padding-bottom:env(safe-area-inset-bottom,0px);}.pt-safe{padding-top:env(safe-area-inset-top,0px);}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { "colors": { "surface-container-highest": "#d3e4fe", "on-error": "#ffffff", "on-error-container": "#93000a", "surface-dim": "#cbdbf5", "inverse-surface": "#213145", "on-surface-variant": "#474651", "on-secondary-fixed": "#00201d", "on-secondary-container": "#006f66", "on-primary": "#ffffff", "surface-container-lowest": "#ffffff", "on-surface": "#0b1c30", "secondary": "#006a61", "tertiary-fixed-dim": "#ffb2b7", "error": "#ba1a1a", "tertiary-container": "#790021", "on-tertiary": "#ffffff", "surface-bright": "#f8f9ff", "on-secondary": "#ffffff", "on-primary-container": "#9c9af4", "surface": "#f8f9ff", "surface-tint": "#5654a8", "background": "#f8f9ff", "primary-fixed": "#e2dfff", "tertiary-fixed": "#ffdadb", "on-background": "#0b1c30", "outline-variant": "#c8c5d3", "primary-fixed-dim": "#c3c0ff", "error-container": "#ffdad6", "outline": "#777682", "secondary-container": "#86f2e4", "on-tertiary-fixed-variant": "#920029", "on-primary-fixed": "#100563", "inverse-on-surface": "#eaf1ff", "on-tertiary-fixed": "#40000d", "inverse-primary": "#c3c0ff", "surface-container-high": "#dce9ff", "tertiary": "#500013", "surface-variant": "#d3e4fe", "on-tertiary-container": "#ff7a86", "primary-container": "#312e81", "secondary-fixed-dim": "#6bd8cb", "on-secondary-fixed-variant": "#005049", "primary": "#1a146b", "on-primary-fixed-variant": "#3e3c8f", "secondary-fixed": "#89f5e7", "surface-container-low": "#eff4ff", "surface-container": "#e5eeff" }, "borderRadius": { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" }, "spacing": { "space-lg": "1.5rem", "space-md": "1rem", "gutter": "1rem", "space-sm": "0.5rem", "space-xs": "0.25rem", "margin": "1.25rem", "space-xl": "2rem" }, "fontFamily": { "label-lg": ["Inter"], "headline-lg": ["Inter"], "body-lg": ["Inter"], "headline-md": ["Inter"], "label-md": ["Inter"], "spelling-input": ["Inter"], "display-lg": ["Inter"], "label-sm": ["Inter"], "body-md": ["Inter"] }, "fontSize": { "label-lg": ["14px", { "lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "600" }], "headline-lg": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.02em", "fontWeight": "600" }], "body-lg": ["16px", { "lineHeight": "24px", "fontWeight": "400" }], "headline-md": ["20px", { "lineHeight": "28px", "letterSpacing": "-0.015em", "fontWeight": "600" }], "label-md": ["12px", { "lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "500" }], "spelling-input": ["22px", { "lineHeight": "28px", "letterSpacing": "0.08em", "fontWeight": "600" }], "display-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.025em", "fontWeight": "700" }], "label-sm": ["11px", { "lineHeight": "14px", "letterSpacing": "0.04em", "fontWeight": "600" }], "body-md": ["14px", { "lineHeight": "20px", "fontWeight": "400" }] } } } };</script></head><body class="bg-surface font-body-md text-on-surface flex flex-col min-h-screen"><header class="fixed top-0 inset-x-0 z-50 bg-surface/85 backdrop-blur-xl shadow-[0_1px_8px_rgba(15,23,42,0.04)] pt-safe"><div class="h-14 px-margin flex items-center justify-between"><div class="flex items-center gap-space-sm"><button aria-label="Back" class="w-11 h-11 flex items-center justify-center rounded-lg text-on-surface hover:bg-surface-container transition-colors" onclick="history.back()"><span class="material-symbols-outlined text-[22px]">arrow_back_ios_new</span></button><img alt="IELTS Audio Spelling Logo" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAbfKdEgq7peeGqKQ6CN7ziVETxVHHloEHaVuQM_j1cXWZNBIn_W8563B1Lh3l-DIlj8lNPFWLCPk3IawQGsodozw6qXgEP6B_kglXBvcBgNK5Qec5WTxtCa_Xup8Sc6aA4XOkK-sOaC3Q8rLBeF25Ivbx_JiS5iqrx1nGP93m_eLT7KE-893EVa6TiPZ70TC0aEw4EzU3y5MJa1_rO-xWVCG-830F8nZl7NdOS5za4GcqP43T1AZ8E"/><h1 class="font-headline-md text-headline-md text-on-surface truncate max-w-[170px]">Word List Details</h1></div><div class="flex items-center"><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div></div></div></header><main class="flex flex-col relative w-full pt-14 pb-safe px-margin bg-surface flex-1"><div class="flex flex-col w-full pb-10">
+<!-- Top Navigation & Title Bar -->
+<div class="flex items-center justify-between py-space-sm mb-space-sm">
+<button aria-label="Back to Word Lists" class="flex items-center gap-1 text-primary hover:text-primary-container transition-colors py-1 px-2 rounded-lg -ml-2" onclick="history.back()">
+<span class="material-symbols-outlined text-[20px]">chevron_left</span>
+<span class="font-label-lg text-label-lg">Word Lists</span>
+</button>
+<div class="flex items-center gap-space-xs">
+<span class="font-label-sm text-label-sm text-on-surface-variant bg-surface-container px-2.5 py-1 rounded-full uppercase tracking-wider font-semibold">Self-Check</span>
+</div>
+</div>
+<!-- Session Summary Header Card with Subtle Ambient Layering -->
+<div class="bg-surface-container-lowest rounded-xl p-space-md shadow-sm mb-space-md relative overflow-hidden">
+<div class="flex flex-col gap-space-xs">
+<div class="flex items-center justify-between">
+<span class="font-label-md text-label-md text-primary font-semibold">Session — September 30</span>
+<span class="inline-flex items-center gap-1 font-label-sm text-label-sm text-secondary bg-secondary-container/40 px-2 py-0.5 rounded-full font-medium">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>
+          Medium Band
+        </span>
+</div>
+<h2 class="font-headline-md text-headline-md text-on-surface">Listening Section 1 & 3 Dictation</h2>
+<!-- Metadata Chips -->
+<div class="flex flex-wrap items-center gap-space-sm mt-1 text-on-surface-variant font-label-md text-label-md">
+<span class="flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px] text-primary">schedule</span>
+          30 min
+        </span>
+<span class="text-outline-variant">•</span>
+<span class="flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px] text-primary">headphones</span>
+          IELTS Listening
+        </span>
+<span class="text-outline-variant">•</span>
+<span class="flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px] text-primary">format_list_numbered</span>
+          40 words total
+        </span>
+</div>
+<!-- Quick Session Completion Pill Tracker -->
+<div class="mt-space-sm pt-space-sm flex items-center justify-between bg-surface-container-low rounded-lg p-space-sm">
+<div class="flex items-center gap-2">
+<div class="w-7 h-7 rounded-full bg-primary-container text-on-primary flex items-center justify-center">
+<span class="material-symbols-outlined text-[16px]">fact_check</span>
+</div>
+<div>
+<p class="font-label-sm text-label-sm text-on-surface-variant">Review Status</p>
+<p class="font-label-lg text-label-lg text-on-surface" id="status-counter"><span class="text-error font-bold" id="misspelled-count">3</span> marked for retest</p>
+</div>
+</div>
+<div class="flex items-center gap-1 bg-surface-container px-2.5 py-1 rounded-full font-label-sm text-label-sm text-on-surface font-semibold">
+<span id="reviewed-count">12</span>/12 reviewed
+        </div>
+</div>
+</div>
+</div>
+<!-- Editorial Visual Inspiration: Quiet Study Atmosphere -->
+<div class="bg-surface-container-lowest rounded-xl p-space-sm shadow-sm mb-space-md flex items-center gap-space-md overflow-hidden">
+<img class="w-20 h-20 rounded-lg object-cover flex-shrink-0" data-alt="Close up of a student desk with an IELTS practice answer sheet with pencil checkmarks next to handwritten English words, soft warm morning window light, high key minimalism, deep navy study planner and wireless white earbuds beside it, crisp and focused mood" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCTA-FFjtiUKalajKqOiZ7yIPBvJdqZ2hVFJVA3WoZIDAViqtoY1UpGQhaP-xGpsEZHM2lfUEJP6OpRgrAi5TzrI4NQzw4_BZ6aVz6jFjLps0jqohAy3Bt4BMp1x0jMypIazN6QKcRVAgvMSfu6uV_m55yAr-INjU8UciNuBS3wEsy2neH3V2U2JDw1knJWBZ2_paj8_bXJqaWtNZTHoWltXaP1Ass4G6utWlrhNhrI1P83wnHI2Mtw"/>
+<div class="flex flex-col pr-1">
+<div class="flex items-center gap-1 text-secondary font-label-sm text-label-sm font-semibold mb-0.5">
+<span class="material-symbols-outlined text-[15px]">lightbulb</span>
+        IELTS Spelling Rule
+      </div>
+<p class="font-body-md text-body-md text-on-surface-variant line-clamp-2">Double consonants (c-c, m-m) and unstressed vowels account for over 60% of lost band score marks.</p>
+</div>
+</div>
+<!-- Instructions Notice Card (Self-Check Mode) -->
+<div class="bg-surface-container-high/60 rounded-xl p-space-md mb-space-lg flex gap-space-sm items-start">
+<div class="w-8 h-8 rounded-lg bg-surface-container-lowest text-primary flex items-center justify-center flex-shrink-0 shadow-sm">
+<span class="material-symbols-outlined text-[20px]">edit_note</span>
+</div>
+<div class="flex flex-col gap-0.5">
+<h3 class="font-label-lg text-label-lg text-on-surface">Self-Check Mode</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">Compare this list against your handwritten notes on paper. Mark words you misspelled to track tricky IELTS vocabulary.</p>
+</div>
+</div>
+<!-- Words Spoken Section Header -->
+<div class="flex items-center justify-between mb-space-sm px-1">
+<div class="flex items-center gap-space-xs">
+<h3 class="font-headline-md text-headline-md text-on-surface">Session Words</h3>
+<span class="font-label-md text-label-md text-on-surface-variant">(12 shown)</span>
+</div>
+<button aria-label="Expand all word phonetic notes" class="font-label-md text-label-md text-primary flex items-center gap-0.5 hover:underline" onclick="toggleAllAudioHint()">
+<span class="material-symbols-outlined text-[16px]">unfold_more</span>
+      Toggle Details
+    </button>
+</div>
+<!-- Word List Container -->
+<div class="flex flex-col gap-space-sm mb-space-xl" id="word-list-container">
+<!-- Item 1: accommodation -->
+<div class="word-card bg-surface-container-lowest rounded-xl p-space-md shadow-sm transition-all" data-word-id="1">
+<div class="flex items-start justify-between gap-space-sm">
+<div class="flex items-start gap-space-sm min-w-0">
+<span class="font-label-md text-label-md text-on-surface-variant/70 w-5 pt-1 text-right">01</span>
+<div class="flex flex-col min-w-0">
+<div class="flex items-center gap-2">
+<span class="font-headline-md text-headline-md text-on-surface tracking-tight font-semibold">accommodation</span>
+<button aria-label="Play native audio for accommodation" class="w-8 h-8 rounded-full bg-surface-container-low hover:bg-surface-container text-primary flex items-center justify-center transition-colors active:scale-95" onclick="playNativeAudio('accommodation', this)">
+<span class="material-symbols-outlined text-[18px]">volume_up</span>
+</button>
+</div>
+<p class="font-label-md text-label-md text-on-surface-variant mt-0.5">/əˌkɒm.əˈdeɪ.ʃən/ · <span class="italic">noun</span></p>
+</div>
+</div>
+<!-- Toggle Controls (Correct / Misspelled) -->
+<div class="flex items-center bg-surface-container-low rounded-lg p-0.5 flex-shrink-0">
+<button aria-label="Mark accommodation correct" class="status-btn-correct px-2.5 py-1.5 rounded font-label-md text-label-md flex items-center gap-1 transition-all text-on-surface-variant hover:text-on-surface" data-status="correct" onclick="markStatus(1, 'correct')">
+<span class="material-symbols-outlined text-[16px]">check_circle</span>
+<span class="hidden sm:inline">Correct</span>
+</button>
+<button aria-label="Mark accommodation misspelled" class="status-btn-misspelled px-2.5 py-1.5 rounded font-label-md text-label-md flex items-center gap-1 transition-all bg-error text-on-error shadow-sm" data-status="misspelled" onclick="markStatus(1, 'misspelled')">
+<span class="material-symbols-outlined text-[16px]">cancel</span>
+<span class="font-bold">Retest</span>
+</button>
+</div>
+</div>
+<!-- Expandable Definition / IELTS Trap Clue -->
+<div class="details-panel mt-space-sm pt-space-xs bg-surface-container-low/70 rounded-lg p-space-sm flex items-start gap-2">
+<span class="material-symbols-outlined text-primary text-[18px] flex-shrink-0 mt-0.5">flag</span>
+<div class="font-body-md text-body-md text-on-surface-variant">
+<strong class="font-semibold text-on-surface">Common trap:</strong> Contains double <strong class="text-error font-semibold">cc</strong> and double <strong class="text-error font-semibold">mm</strong>. Frequent in Section 1 booking dialogues.
+        </div>
+</div>
+</div>
+<!-- Item 2: environment -->
+<div class="word-card bg-surface-container-lowest rounded-xl p-space-md shadow-sm transition-all" data-word-id="2">
+<div class="flex items-start justify-between gap-space-sm">
+<div class="flex items-start gap-space-sm min-w-0">
+<span class="font-label-md text-label-md text-on-surface-variant/70 w-5 pt-1 text-right">02</span>
+<div class="flex flex-col min-w-0">
+<div class="flex items-center gap-2">
+<span class="font-headline-md text-headline-md text-on-surface tracking-tight font-semibold">environment</span>
+<button aria-label="Play native audio for environment" class="w-8 h-8 rounded-full bg-surface-container-low hover:bg-surface-container text-primary flex items-center justify-center transition-colors active:scale-95" onclick="playNativeAudio('environment', this)">
+<span class="material-symbols-outlined text-[18px]">volume_up</span>
+</button>
+</div>
+<p class="font-label-md text-label-md text-on-surface-variant mt-0.5">/ɪnˈvaɪ.rən.mənt/ · <span class="italic">noun</span></p>
+</div>
+</div>
+<div class="flex items-center bg-surface-container-low rounded-lg p-0.5 flex-shrink-0">
+<button aria-label="Mark environment correct" class="status-btn-correct px-2.5 py-1.5 rounded font-label-md text-label-md flex items-center gap-1 transition-all bg-secondary text-on-secondary shadow-sm" data-status="correct" onclick="markStatus(2, 'correct')">
+<span class="material-symbols-outlined text-[16px]">check_circle</span>
+<span class="font-bold">Correct</span>
+</button>
+<button aria-label="Mark environment misspelled" class="status-btn-misspelled px-2.5 py-1.5 rounded font-label-md text-label-md flex items-center gap-1 transition-all text-on-surface-variant hover:text-on-surface" data-status="misspelled" onclick="markStatus(2, 'misspelled')">
+<span class="material-symbols-outlined text-[16px]">cancel</span>
+<span class="hidden sm:inline">Retest</span>
+</button>
+</div>
+</div>
+<div class="details-panel mt-space-sm pt-space-xs bg-surface-container-low/70 rounded-lg p-space-sm flex items-start gap-2">
+<span class="material-symbols-outlined text-primary text-[18px] flex-shrink-0 mt-0.5">info</span>
+<div class="font-body-md text-body-md text-on-surface-variant">
+          Do not omit the silent <strong class="text-on-surface font-semibold">'n'</strong> before 'ment' (<span class="underline decoration-error decoration-2">environ-ment</span>).
+        </div>
+</div>
+</div>
+<!-- Item 3: government -->
+<div class="word-card bg-surface-container-lowest rounded-xl p-space-md shadow-sm transition-all" data-word-id="3">
+<div class="flex items-start justify-between gap-space-sm">
+<div class="flex items-start gap-space-sm min-w-0">
+<span class="font-label-md text-label-md text-on-surface-variant/70 w-5 pt-1 text-right">03</span>
+<div class="flex flex-col min-w-0">
+<div class="flex items-center gap-2">
+<span class="font-headline-md text-headline-md text-on-surface tracking-tight font-semibold">government</span>
+<button aria-label="Play native audio for government" class="w-8 h-8 rounded-full bg-surface-container-low hover:bg-surface-container text-primary flex items-center justify-center transition-colors active:scale-95" onclick="playNativeAudio('government', this)">
+<span class="material-symbols-outlined text-[18px]">volume_up</span>
+</button>
+</div>
+<p class="font-label-md text-label-md text-on-surface-variant mt-0.5">/ˈɡʌv.ən.mənt/ · <span class="italic">noun</span></p>
+</div>
+</div>
+<div class="flex items-center bg-surface-container-low rounded-lg p-0.5 flex-shrink-0">
+<button aria-label="Mark government correct" class="status-btn-correct px-2.5 py-1.5 rounded font-label-md text-label-md flex items-center gap-1 transition-all bg-secondary text-on-secondary shadow-sm" data-status="correct" onclick="markStatus(3, 'correct')">
+<span class="material-symbols-outlined text-[16px]">check_circle</span>
+<span class="font-bold">Correct</span>
+</button>
+<button aria-label="Mark government misspelled" class="status-btn-misspelled px-2.5 py-1.5 rounded font-label-md text-label-md flex items-center gap-1 transition-all text-on-surface-variant hover:text-on-surface" data-status="misspelled" onclick="markStatus(3, 'misspelled')">
+<span class="material-symbols-outlined text-[16px]">cancel</span>
+<span class="hidden sm:inline">Retest</span>
+</button>
+</div>
+</div>
+<div class="details-panel mt-space-sm pt-space-xs bg-surface-container-low/70 rounded-lg p-space-sm flex items-start gap-2">
+<span class="material-symbols-outlined text-primary text-[18px] flex-shrink-0 mt-0.5">info</span>
+<div class="font-body-md text-body-md text-on-surface-variant">
+          Remember the medial <strong class="text-on-surface font-semibold">'n'</strong> after 'govern'.
+        </div>
+</div>
+</div>
+<!-- Item 4: appointment -->
+<div class="word-card bg-surface-container-lowest rounded-xl p-space-md shadow-sm transition-all" data-word-id="4">
+<div class="flex items-start justify-between gap-space-sm">
+<div class="flex items-start gap-space-sm min-w-0">
+<span class="font-label-md text-label-md text-on-surface-variant/70 w-5 pt-1 text-right">04</span>
+<div class="flex flex-col min-w-0">
+<div class="flex items-center gap-2">
+<span class="font-headline-md text-headline-md text-on-surface tracking-tight font-semibold">appointment</span>
+<button aria-label="Play native audio for appointment" class="w-8 h-8 rounded-full bg-surface-container-low hover:bg-surface-container text-primary flex items-center justify-center transition-colors active:scale-95" onclick="playNativeAudio('appointment', this)">
+<span class="material-symbols-outlined text-[18px]">volume_up</span>
+</button>
+</div>
+<p class="font-label-md text-label-md text-on-surface-variant mt-0.5">/əˈpɔɪnt.mənt/ · <span class="italic">noun</span></p>
+</div>
+</div>
+<div class="flex items-center bg-surface-container-low rounded-lg p-0.5 flex-shrink-0">
+<button aria-label="Mark appointment correct" class="status-btn-correct px-2.5 py-1.5 rounded font-label-md text-label-md flex items-center gap-1 transition-all bg-secondary text-on-secondary shadow-sm" data-status="correct" onclick="markStatus(4, 'correct')">
+<span class="material-symbols-outlined text-[16px]">check_circle</span>
+<span class="font-bold">Correct</span>
+</button>
+<button aria-label="Mark appointment misspelled" class="status-btn-misspelled px-2.5 py-1.5 rounded font-label-md text-label-md flex items-center gap-1 transition-all text-on-surface-variant hover:text-on-surface" data-status="misspelled" onclick="markStatus(4, 'misspelled')">
+<span class="material-symbols-outlined text-[16px]">cancel</span>
+<span class="hidden sm:inline">Retest</span>
+</button>
+</div>
+</div>
+<div class="details-panel mt-space-sm pt-space-xs bg-surface-container-low/70 rounded-lg p-space-sm flex items-start gap-2">
+<span class="material-symbols-outlined text-primary text-[18px] flex-shrink-0 mt-0.5">info</span>
+<div class="font-body-md text-body-md text-on-surface-variant">
+          Double <strong class="text-on-surface font-semibold">'p'</strong> prefix. An arrangement to meet at a particular time.
+        </div>
+</div>
+</div>
+<!-- Item 5: reservation -->
+<div class="word-card bg-surface-container-lowest rounded-xl p-space-md shadow-sm transition-all" data-word-id="5">
+<div class="flex items-start justify-between gap-space-sm">
+<div class="flex items-start gap-space-sm min-w-0">
+<span class="font-label-md text-label-md text-on-surface-variant/70 w-5 pt-1 text-right">05</span>
+<div class="flex flex-col min-w-0">
+<div class="flex items-center gap-2">
+<span class="font-headline-md text-headline-md text-on-surface tracking-tight font-semibold">reservation</span>
+<button aria-label="Play native audio for reservation" class="w-8 h-8 rounded-full bg-surface-container-low hover:bg-surface-container text-primary flex items-center justify-center transition-colors active:scale-95" onclick="playNativeAudio('reservation', this)">
+<span class="material-symbols-outlined text-[18px]">volume_up</span>
+</button>
+</div>
+<p class="font-label-md text-label-md text-on-surface-variant mt-0.5">/ˌrez.əˈveɪ.ʃən/ · <span class="italic">noun</span></p>
+</div>
+</div>
+<div class="flex items-center bg-surface-container-low rounded-lg p-0.5 flex-shrink-0">
+<button aria-label="Mark reservation correct" class="status-btn-correct px-2.5 py-1.5 rounded font-label-md text-label-md flex items-center gap-1 transition-all bg-secondary text-on-secondary shadow-sm" data-status="correct" onclick="markStatus(5, 'correct')">
+<span class="material-symbols-outlined text-[16px]">check_circle</span>
+<span class="font-bold">Correct</span>
+</button>
+<button aria-label="Mark reservation misspelled" class="status-btn-misspelled px-2.5 py-1.5 rounded font-label-md text-label-md flex items-center gap-1 transition-all text-on-surface-variant hover:text-on-surface" data-status="misspelled" onclick="markStatus(5, 'misspelled')">
+<span class="material-symbols-outlined text-[16px]">cancel</span>
+<span class="hidden sm:inline">Retest</span>
+</button>
+</div>
+</div>
+<div class="details-panel mt-space-sm pt-space-xs bg-surface-container-low/70 rounded-lg p-space-sm flex items-start gap-2">
+<span class="material-symbols-outlined text-primary text-[18px] flex-shrink-0 mt-0.5">info</span>
+<div class="font-body-md text-body-md text-on-surface-variant">
+          Single <strong class="text-on-surface font-semibold">'s'</strong>, followed by standard '-tion' nominal suffix.
+        </div>
+</div>
+</div>
+<!-- Item 6: questionnaire -->
+<div class="word-card bg-surface-container-lowest rounded-xl p-space-md shadow-sm transition-all" data-word-id="6">
+<div class="flex items-start justify-between gap-space-sm">
+<div class="flex items-start gap-space-sm min-w-0">
+<span class="font-label-md text-label-md text-on-surface-variant/70 w-5 pt-1 text-right">06</span>
+<div class="flex flex-col min-w-0">
+<div class="flex items-center gap-2">
+<span class="font-headline-md text-headline-md text-on-surface tracking-tight font-semibold">questionnaire</span>
+<button aria-label="Play native audio for questionnaire" class="w-8 h-8 rounded-full bg-surface-container-low hover:bg-surface-container text-primary flex items-center justify-center transition-colors active:scale-95" onclick="playNativeAudio('questionnaire', this)">
+<span class="material-symbols-outlined text-[18px]">volume_up</span>
+</button>
+</div>
+<p class="font-label-md text-label-md text-on-surface-variant mt-0.5">/ˌkwes.tʃəˈneər/ · <span class="italic">noun</span></p>
+</div>
+</div>
+<div class="flex items-center bg-surface-container-low rounded-lg p-0.5 flex-shrink-0">
+<button aria-label="Mark questionnaire correct" class="status-btn-correct px-2.5 py-1.5 rounded font-label-md text-label-md flex items-center gap-1 transition-all text-on-surface-variant hover:text-on-surface" data-status="correct" onclick="markStatus(6, 'correct')">
+<span class="material-symbols-outlined text-[16px]">check_circle</span>
+<span class="hidden sm:inline">Correct</span>
+</button>
+<button aria-label="Mark questionnaire misspelled" class="status-btn-misspelled px-2.5 py-1.5 rounded font-label-md text-label-md flex items-center gap-1 transition-all bg-error text-on-error shadow-sm" data-status="misspelled" onclick="markStatus(6, 'misspelled')">
+<span class="material-symbols-outlined text-[16px]">cancel</span>
+<span class="font-bold">Retest</span>
+</button>
+</div>
+</div>
+<div class="details-panel mt-space-sm pt-space-xs bg-surface-container-low/70 rounded-lg p-space-sm flex items-start gap-2">
+<span class="material-symbols-outlined text-primary text-[18px] flex-shrink-0 mt-0.5">flag</span>
+<div class="font-body-md text-body-md text-on-surface-variant">
+<strong class="font-semibold text-on-surface">Common trap:</strong> Double <strong class="text-error font-semibold">nn</strong> ending in <strong class="text-error font-semibold">-aire</strong>, not '-ar'.
+        </div>
+</div>
+</div>
+<!-- Item 7: maintenance -->
+<div class="word-card bg-surface-container-lowest rounded-xl p-space-md shadow-sm transition-all" data-word-id="7">
+<div class="flex items-start justify-between gap-space-sm">
+<div class="flex items-start gap-space-sm min-w-0">
+<span class="font-label-md text-label-md text-on-surface-variant/70 w-5 pt-1 text-right">07</span>
+<div class="flex flex-col min-w-0">
+<div class="flex items-center gap-2">
+<span class="font-headline-md text-headline-md text-on-surface tracking-tight font-semibold">maintenance</span>
+<button aria-label="Play native audio for maintenance" class="w-8 h-8 rounded-full bg-surface-container-low hover:bg-surface-container text-primary flex items-center justify-center transition-colors active:scale-95" onclick="playNativeAudio('maintenance', this)">
+<span class="material-symbols-outlined text-[18px]">volume_up</span>
+</button>
+</div>
+<p class="font-label-md text-label-md text-on-surface-variant mt-0.5">/ˈmeɪn.tɪ.nəns/ · <span class="italic">noun</span></p>
+</div>
+</div>
+<div class="flex items-center bg-surface-container-low rounded-lg p-0.5 flex-shrink-0">
+<button aria-label="Mark maintenance correct" class="status-btn-correct px-2.5 py-1.5 rounded font-label-md text-label-md flex items-center gap-1 transition-all bg-secondary text-on-secondary shadow-sm" data-status="correct" onclick="markStatus(7, 'correct')">
+<span class="material-symbols-outlined text-[16px]">check_circle</span>
+<span class="font-bold">Correct</span>
+</button>
+<button aria-label="Mark maintenance misspelled" class="status-btn-misspelled px-2.5 py-1.5 rounded font-label-md text-label-md flex items-center gap-1 transition-all text-on-surface-variant hover:text-on-surface" data-status="misspelled" onclick="markStatus(7, 'misspelled')">
+<span class="material-symbols-outlined text-[16px]">cancel</span>
+<span class="hidden sm:inline">Retest</span>
+</button>
+</div>
+</div>
+<div class="details-panel mt-space-sm pt-space-xs bg-surface-container-low/70 rounded-lg p-space-sm flex items-start gap-2">
+<span class="material-symbols-outlined text-primary text-[18px] flex-shrink-0 mt-0.5">info</span>
+<div class="font-body-md text-body-md text-on-surface-variant">
+          Root verb is 'maintain', but the noun shifts spelling to <strong class="text-on-surface font-semibold">'main-ten-ance'</strong>.
+        </div>
+</div>
+</div>
+<!-- Item 8: laboratory -->
+<div class="word-card bg-surface-container-lowest rounded-xl p-space-md shadow-sm transition-all" data-word-id="8">
+<div class="flex items-start justify-between gap-space-sm">
+<div class="flex items-start gap-space-sm min-w-0">
+<span class="font-label-md text-label-md text-on-surface-variant/70 w-5 pt-1 text-right">08</span>
+<div class="flex flex-col min-w-0">
+<div class="flex items-center gap-2">
+<span class="font-headline-md text-headline-md text-on-surface tracking-tight font-semibold">laboratory</span>
+<button aria-label="Play native audio for laboratory" class="w-8 h-8 rounded-full bg-surface-container-low hover:bg-surface-container text-primary flex items-center justify-center transition-colors active:scale-95" onclick="playNativeAudio('laboratory', this)">
+<span class="material-symbols-outlined text-[18px]">volume_up</span>
+</button>
+</div>
+<p class="font-label-md text-label-md text-on-surface-variant mt-0.5">/ləˈbɒr.ə.tər.i/ · <span class="italic">noun</span></p>
+</div>
+</div>
+<div class="flex items-center bg-surface-container-low rounded-lg p-0.5 flex-shrink-0">
+<button aria-label="Mark laboratory correct" class="status-btn-correct px-2.5 py-1.5 rounded font-label-md text-label-md flex items-center gap-1 transition-all bg-secondary text-on-secondary shadow-sm" data-status="correct" onclick="markStatus(8, 'correct')">
+<span class="material-symbols-outlined text-[16px]">check_circle</span>
+<span class="font-bold">Correct</span>
+</button>
+<button aria-label="Mark laboratory misspelled" class="status-btn-misspelled px-2.5 py-1.5 rounded font-label-md text-label-md flex items-center gap-1 transition-all text-on-surface-variant hover:text-on-surface" data-status="misspelled" onclick="markStatus(8, 'misspelled')">
+<span class="material-symbols-outlined text-[16px]">cancel</span>
+<span class="hidden sm:inline">Retest</span>
+</button>
+</div>
+</div>
+<div class="details-panel mt-space-sm pt-space-xs bg-surface-container-low/70 rounded-lg p-space-sm flex items-start gap-2">
+<span class="material-symbols-outlined text-primary text-[18px] flex-shrink-0 mt-0.5">info</span>
+<div class="font-body-md text-body-md text-on-surface-variant">
+          Includes an unstressed <strong class="text-on-surface font-semibold">'o'</strong>: lab-o-ra-tory.
+        </div>
+</div>
+</div>
+<!-- Item 9: temperature -->
+<div class="word-card bg-surface-container-lowest rounded-xl p-space-md shadow-sm transition-all" data-word-id="9">
+<div class="flex items-start justify-between gap-space-sm">
+<div class="flex items-start gap-space-sm min-w-0">
+<span class="font-label-md text-label-md text-on-surface-variant/70 w-5 pt-1 text-right">09</span>
+<div class="flex flex-col min-w-0">
+<div class="flex items-center gap-2">
+<span class="font-headline-md text-headline-md text-on-surface tracking-tight font-semibold">temperature</span>
+<button aria-label="Play native audio for temperature" class="w-8 h-8 rounded-full bg-surface-container-low hover:bg-surface-container text-primary flex items-center justify-center transition-colors active:scale-95" onclick="playNativeAudio('temperature', this)">
+<span class="material-symbols-outlined text-[18px]">volume_up</span>
+</button>
+</div>
+<p class="font-label-md text-label-md text-on-surface-variant mt-0.5">/ˈtem.prə.tʃər/ · <span class="italic">noun</span></p>
+</div>
+</div>
+<div class="flex items-center bg-surface-container-low rounded-lg p-0.5 flex-shrink-0">
+<button aria-label="Mark temperature correct" class="status-btn-correct px-2.5 py-1.5 rounded font-label-md text-label-md flex items-center gap-1 transition-all bg-secondary text-on-secondary shadow-sm" data-status="correct" onclick="markStatus(9, 'correct')">
+<span class="material-symbols-outlined text-[16px]">check_circle</span>
+<span class="font-bold">Correct</span>
+</button>
+<button aria-label="Mark temperature misspelled" class="status-btn-misspelled px-2.5 py-1.5 rounded font-label-md text-label-md flex items-center gap-1 transition-all text-on-surface-variant hover:text-on-surface" data-status="misspelled" onclick="markStatus(9, 'misspelled')">
+<span class="material-symbols-outlined text-[16px]">cancel</span>
+<span class="hidden sm:inline">Retest</span>
+</button>
+</div>
+</div>
+<div class="details-panel mt-space-sm pt-space-xs bg-surface-container-low/70 rounded-lg p-space-sm flex items-start gap-2">
+<span class="material-symbols-outlined text-primary text-[18px] flex-shrink-0 mt-0.5">info</span>
+<div class="font-body-md text-body-md text-on-surface-variant">
+          Watch out for middle vowel <strong class="text-on-surface font-semibold">'er'</strong>: tem-per-a-ture.
+        </div>
+</div>
+</div>
+<!-- Item 10: parliament -->
+<div class="word-card bg-surface-container-lowest rounded-xl p-space-md shadow-sm transition-all" data-word-id="10">
+<div class="flex items-start justify-between gap-space-sm">
+<div class="flex items-start gap-space-sm min-w-0">
+<span class="font-label-md text-label-md text-on-surface-variant/70 w-5 pt-1 text-right">10</span>
+<div class="flex flex-col min-w-0">
+<div class="flex items-center gap-2">
+<span class="font-headline-md text-headline-md text-on-surface tracking-tight font-semibold">parliament</span>
+<button aria-label="Play native audio for parliament" class="w-8 h-8 rounded-full bg-surface-container-low hover:bg-surface-container text-primary flex items-center justify-center transition-colors active:scale-95" onclick="playNativeAudio('parliament', this)">
+<span class="material-symbols-outlined text-[18px]">volume_up</span>
+</button>
+</div>
+<p class="font-label-md text-label-md text-on-surface-variant mt-0.5">/ˈpɑː.lɪ.mənt/ · <span class="italic">noun</span></p>
+</div>
+</div>
+<div class="flex items-center bg-surface-container-low rounded-lg p-0.5 flex-shrink-0">
+<button aria-label="Mark parliament correct" class="status-btn-correct px-2.5 py-1.5 rounded font-label-md text-label-md flex items-center gap-1 transition-all text-on-surface-variant hover:text-on-surface" data-status="correct" onclick="markStatus(10, 'correct')">
+<span class="material-symbols-outlined text-[16px]">check_circle</span>
+<span class="hidden sm:inline">Correct</span>
+</button>
+<button aria-label="Mark parliament misspelled" class="status-btn-misspelled px-2.5 py-1.5 rounded font-label-md text-label-md flex items-center gap-1 transition-all bg-error text-on-error shadow-sm" data-status="misspelled" onclick="markStatus(10, 'misspelled')">
+<span class="material-symbols-outlined text-[16px]">cancel</span>
+<span class="font-bold">Retest</span>
+</button>
+</div>
+</div>
+<div class="details-panel mt-space-sm pt-space-xs bg-surface-container-low/70 rounded-lg p-space-sm flex items-start gap-2">
+<span class="material-symbols-outlined text-primary text-[18px] flex-shrink-0 mt-0.5">flag</span>
+<div class="font-body-md text-body-md text-on-surface-variant">
+<strong class="font-semibold text-on-surface">Common trap:</strong> Silent <strong class="text-error font-semibold">'i'</strong> in <span class="font-semibold">parl-i-ament</span> (from French parler).
+        </div>
+</div>
+</div>
+<!-- Item 11: pronunciation -->
+<div class="word-card bg-surface-container-lowest rounded-xl p-space-md shadow-sm transition-all" data-word-id="11">
+<div class="flex items-start justify-between gap-space-sm">
+<div class="flex items-start gap-space-sm min-w-0">
+<span class="font-label-md text-label-md text-on-surface-variant/70 w-5 pt-1 text-right">11</span>
+<div class="flex flex-col min-w-0">
+<div class="flex items-center gap-2">
+<span class="font-headline-md text-headline-md text-on-surface tracking-tight font-semibold">pronunciation</span>
+<button aria-label="Play native audio for pronunciation" class="w-8 h-8 rounded-full bg-surface-container-low hover:bg-surface-container text-primary flex items-center justify-center transition-colors active:scale-95" onclick="playNativeAudio('pronunciation', this)">
+<span class="material-symbols-outlined text-[18px]">volume_up</span>
+</button>
+</div>
+<p class="font-label-md text-label-md text-on-surface-variant mt-0.5">/prəˌnʌn.siˈeɪ.ʃən/ · <span class="italic">noun</span></p>
+</div>
+</div>
+<div class="flex items-center bg-surface-container-low rounded-lg p-0.5 flex-shrink-0">
+<button aria-label="Mark pronunciation correct" class="status-btn-correct px-2.5 py-1.5 rounded font-label-md text-label-md flex items-center gap-1 transition-all bg-secondary text-on-secondary shadow-sm" data-status="correct" onclick="markStatus(11, 'correct')">
+<span class="material-symbols-outlined text-[16px]">check_circle</span>
+<span class="font-bold">Correct</span>
+</button>
+<button aria-label="Mark pronunciation misspelled" class="status-btn-misspelled px-2.5 py-1.5 rounded font-label-md text-label-md flex items-center gap-1 transition-all text-on-surface-variant hover:text-on-surface" data-status="misspelled" onclick="markStatus(11, 'misspelled')">
+<span class="material-symbols-outlined text-[16px]">cancel</span>
+<span class="hidden sm:inline">Retest</span>
+</button>
+</div>
+</div>
+<div class="details-panel mt-space-sm pt-space-xs bg-surface-container-low/70 rounded-lg p-space-sm flex items-start gap-2">
+<span class="material-symbols-outlined text-primary text-[18px] flex-shrink-0 mt-0.5">info</span>
+<div class="font-body-md text-body-md text-on-surface-variant">
+          Verb is 'pronounce', but noun is spelled <strong class="text-on-surface font-semibold">'pro-nun-ciation'</strong> (no 'o' in nun).
+        </div>
+</div>
+</div>
+<!-- Item 12: recommendation -->
+<div class="word-card bg-surface-container-lowest rounded-xl p-space-md shadow-sm transition-all" data-word-id="12">
+<div class="flex items-start justify-between gap-space-sm">
+<div class="flex items-start gap-space-sm min-w-0">
+<span class="font-label-md text-label-md text-on-surface-variant/70 w-5 pt-1 text-right">12</span>
+<div class="flex flex-col min-w-0">
+<div class="flex items-center gap-2">
+<span class="font-headline-md text-headline-md text-on-surface tracking-tight font-semibold">recommendation</span>
+<button aria-label="Play native audio for recommendation" class="w-8 h-8 rounded-full bg-surface-container-low hover:bg-surface-container text-primary flex items-center justify-center transition-colors active:scale-95" onclick="playNativeAudio('recommendation', this)">
+<span class="material-symbols-outlined text-[18px]">volume_up</span>
+</button>
+</div>
+<p class="font-label-md text-label-md text-on-surface-variant mt-0.5">/ˌrek.ə.menˈdeɪ.ʃən/ · <span class="italic">noun</span></p>
+</div>
+</div>
+<div class="flex items-center bg-surface-container-low rounded-lg p-0.5 flex-shrink-0">
+<button aria-label="Mark recommendation correct" class="status-btn-correct px-2.5 py-1.5 rounded font-label-md text-label-md flex items-center gap-1 transition-all bg-secondary text-on-secondary shadow-sm" data-status="correct" onclick="markStatus(12, 'correct')">
+<span class="material-symbols-outlined text-[16px]">check_circle</span>
+<span class="font-bold">Correct</span>
+</button>
+<button aria-label="Mark recommendation misspelled" class="status-btn-misspelled px-2.5 py-1.5 rounded font-label-md text-label-md flex items-center gap-1 transition-all text-on-surface-variant hover:text-on-surface" data-status="misspelled" onclick="markStatus(12, 'misspelled')">
+<span class="material-symbols-outlined text-[16px]">cancel</span>
+<span class="hidden sm:inline">Retest</span>
+</button>
+</div>
+</div>
+<div class="details-panel mt-space-sm pt-space-xs bg-surface-container-low/70 rounded-lg p-space-sm flex items-start gap-2">
+<span class="material-symbols-outlined text-primary text-[18px] flex-shrink-0 mt-0.5">info</span>
+<div class="font-body-md text-body-md text-on-surface-variant">
+          Single <strong class="text-on-surface font-semibold">'c'</strong>, followed by double <strong class="text-on-surface font-semibold">'mm'</strong>.
+        </div>
+</div>
+</div>
+</div>
+<!-- Audio Toast Notification (appears dynamically when audio plays) -->
+<div class="opacity-0 pointer-events-none fixed bottom-24 left-1/2 -translate-x-1/2 bg-inverse-surface text-inverse-on-surface px-4 py-2 rounded-full font-label-md text-label-md shadow-lg transition-opacity duration-200 z-40 flex items-center gap-2" id="audio-toast">
+<span class="material-symbols-outlined text-[18px] text-secondary-container">new_window</span>
+<span id="toast-text">Pronunciation playing...</span>
+</div>
+<!-- Bottom Fixed-ish Floating Action Cluster -->
+<div class="sticky bottom-4 w-full flex flex-col gap-space-sm pt-space-sm bg-gradient-to-t from-surface via-surface to-transparent">
+<!-- Retest Misspelled Words Action (High Priority) -->
+<button class="w-full h-[52px] bg-primary-container text-on-primary rounded-xl font-label-lg text-label-lg flex items-center justify-center gap-2 shadow-md hover:bg-primary transition-all active:scale-[0.99]" onclick="triggerRetestSession()">
+<span class="material-symbols-outlined text-[20px]">fitness_center</span>
+<span>Retest Misspelled Words (<span id="btn-retest-count">3</span>)</span>
+</button>
+<!-- Secondary Export Button -->
+<button class="w-full h-12 bg-surface-container-lowest text-on-surface rounded-xl font-label-lg text-label-lg flex items-center justify-center gap-2 shadow-sm hover:bg-surface-container-low transition-colors" onclick="openExportModal()">
+<span class="material-symbols-outlined text-[18px] text-primary">download</span>
+<span>Export Word List (PDF / Text)</span>
+</button>
+</div>
+<!-- Simple Export Bottom Sheet Modal (Hidden by Default) -->
+<div class="hidden fixed inset-0 z-50 flex items-end justify-center bg-inverse-surface/40 backdrop-blur-sm px-margin pb-6" id="export-sheet">
+<div class="bg-surface-container-lowest w-full rounded-2xl p-space-md shadow-xl flex flex-col gap-space-md animate-in slide-in-from-bottom duration-200">
+<div class="flex items-center justify-between pb-space-xs">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-[24px]">sim_card_download</span>
+<h4 class="font-headline-md text-headline-md text-on-surface">Export Session List</h4>
+</div>
+<button aria-label="Close export sheet" class="w-8 h-8 rounded-full bg-surface-container text-on-surface-variant flex items-center justify-center hover:bg-surface-container-high" onclick="closeExportModal()">
+<span class="material-symbols-outlined text-[18px]">close</span>
+</button>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant">Choose your desired format for printing or importing into Anki / Quizlet:</p>
+<div class="flex flex-col gap-space-sm">
+<button class="w-full p-space-sm bg-surface-container-low hover:bg-surface-container rounded-xl flex items-center justify-between transition-colors" onclick="executeExport('PDF')">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-error text-[24px]">picture_as_pdf</span>
+<div class="text-left">
+<p class="font-label-lg text-label-lg text-on-surface">PDF Printable Flashcards</p>
+<p class="font-label-sm text-label-sm text-on-surface-variant">Includes handwritten spelling ruled boxes</p>
+</div>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant text-[18px]">arrow_forward</span>
+</button>
+<button class="w-full p-space-sm bg-surface-container-low hover:bg-surface-container rounded-xl flex items-center justify-between transition-colors" onclick="executeExport('TXT')">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-secondary text-[24px]">description</span>
+<div class="text-left">
+<p class="font-label-lg text-label-lg text-on-surface">Plain Text / CSV Export</p>
+<p class="font-label-sm text-label-sm text-on-surface-variant">Tab-separated phonetics & common trap clues</p>
+</div>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant text-[18px]">arrow_forward</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+<script>
+  // State representation for tracking checks
+  const wordStatus = {
+    1: 'misspelled', // accommodation
+    2: 'correct',    // environment
+    3: 'correct',    // government
+    4: 'correct',    // appointment
+    5: 'correct',    // reservation
+    6: 'misspelled', // questionnaire
+    7: 'correct',    // maintenance
+    8: 'correct',    // laboratory
+    9: 'correct',    // temperature
+    10: 'misspelled', // parliament
+    11: 'correct',   // pronunciation
+    12: 'correct'    // recommendation
+  };
+
+  let allDetailsExpanded = true;
+
+  function updateCounts() {
+    const misspelledCount = Object.values(wordStatus).filter(s => s === 'misspelled').length;
+    const countEl = document.getElementById('misspelled-count');
+    const btnCountEl = document.getElementById('btn-retest-count');
+    
+    if (countEl) countEl.innerText = misspelledCount;
+    if (btnCountEl) btnCountEl.innerText = misspelledCount;
+  }
+
+  function markStatus(wordId, newStatus) {
+    wordStatus[wordId] = newStatus;
+    const card = document.querySelector(`.word-card[data-word-id="${wordId}"]`);
+    if (!card) return;
+
+    const correctBtn = card.querySelector('.status-btn-correct');
+    const misspelledBtn = card.querySelector('.status-btn-misspelled');
+
+    if (newStatus === 'correct') {
+      correctBtn.className = 'status-btn-correct px-2.5 py-1.5 rounded font-label-md text-label-md flex items-center gap-1 transition-all bg-secondary text-on-secondary shadow-sm';
+      correctBtn.innerHTML = '<span class="material-symbols-outlined text-[16px]">check_circle</span><span class="font-bold">Correct</span>';
+      
+      misspelledBtn.className = 'status-btn-misspelled px-2.5 py-1.5 rounded font-label-md text-label-md flex items-center gap-1 transition-all text-on-surface-variant hover:text-on-surface';
+      misspelledBtn.innerHTML = '<span class="material-symbols-outlined text-[16px]">cancel</span><span class="hidden sm:inline">Retest</span>';
+    } else {
+      correctBtn.className = 'status-btn-correct px-2.5 py-1.5 rounded font-label-md text-label-md flex items-center gap-1 transition-all text-on-surface-variant hover:text-on-surface';
+      correctBtn.innerHTML = '<span class="material-symbols-outlined text-[16px]">check_circle</span><span class="hidden sm:inline">Correct</span>';
+
+      misspelledBtn.className = 'status-btn-misspelled px-2.5 py-1.5 rounded font-label-md text-label-md flex items-center gap-1 transition-all bg-error text-on-error shadow-sm';
+      misspelledBtn.innerHTML = '<span class="material-symbols-outlined text-[16px]">cancel</span><span class="font-bold">Retest</span>';
+    }
+
+    updateCounts();
+  }
+
+  function playNativeAudio(word, buttonElement) {
+    // Micro interaction: animate the speaker button
+    buttonElement.classList.add('bg-primary', 'text-on-primary');
+    
+    const toast = document.getElementById('audio-toast');
+    const toastText = document.getElementById('toast-text');
+    if (toast && toastText) {
+      toastText.innerText = `Playing native accent for: "${word}"`;
+      toast.classList.remove('opacity-0', 'pointer-events-none');
+      toast.classList.add('opacity-100');
+
+      setTimeout(() => {
+        toast.classList.remove('opacity-100');
+        toast.classList.add('opacity-0', 'pointer-events-none');
+        buttonElement.classList.remove('bg-primary', 'text-on-primary');
+      }, 1600);
+    }
+
+    // Try web speech synthesis if available in mobile browser context
+    if ('speechSynthesis' in window) {
+      window.speechSynthesis.cancel();
+      const utterance = new SpeechSynthesisUtterance(word);
+      utterance.lang = 'en-GB'; // Preferred IELTS accent
+      utterance.rate = 0.88;
+      window.speechSynthesis.speak(utterance);
+    }
+  }
+
+  function toggleAllAudioHint() {
+    allDetailsExpanded = !allDetailsExpanded;
+    const panels = document.querySelectorAll('.details-panel');
+    panels.forEach(p => {
+      p.style.display = allDetailsExpanded ? 'flex' : 'none';
+    });
+  }
+
+  function openExportModal() {
+    const sheet = document.getElementById('export-sheet');
+    if (sheet) sheet.classList.remove('hidden');
+  }
+
+  function closeExportModal() {
+    const sheet = document.getElementById('export-sheet');
+    if (sheet) sheet.classList.add('hidden');
+  }
+
+  function executeExport(type) {
+    closeExportModal();
+    const toast = document.getElementById('audio-toast');
+    const toastText = document.getElementById('toast-text');
+    if (toast && toastText) {
+      toastText.innerText = `Preparing IELTS ${type} Word List download...`;
+      toast.classList.remove('opacity-0', 'pointer-events-none');
+      toast.classList.add('opacity-100');
+
+      setTimeout(() => {
+        toast.classList.remove('opacity-100');
+        toast.classList.add('opacity-0', 'pointer-events-none');
+      }, 2000);
+    }
+  }
+
+  function triggerRetestSession() {
+    const misspelledKeys = Object.keys(wordStatus).filter(k => wordStatus[k] === 'misspelled');
+    const toast = document.getElementById('audio-toast');
+    const toastText = document.getElementById('toast-text');
+    if (toast && toastText) {
+      toastText.innerText = `Launching practice drill for ${misspelledKeys.length} tricky words...`;
+      toast.classList.remove('opacity-0', 'pointer-events-none');
+      toast.classList.add('opacity-100');
+
+      setTimeout(() => {
+        toast.classList.remove('opacity-100');
+        toast.classList.add('opacity-0', 'pointer-events-none');
+      }, 1800);
+    }
+  }
+</script></main></body></html>

@@ -1,139 +1,62 @@
 # IELTS Listening Spelling Practice
 
-A mobile app for practicing IELTS listening spelling with AI-generated words, offline-first storage, and progress tracking.
+A paper-and-pencil listening drill for IELTS spelling. The app speaks a new word every few seconds, never shows it, and saves the full word list so you can check your handwriting afterwards.
+
+Built with **Expo SDK 57** (React Native 0.86, React 19), **expo-router**, **expo-sqlite + Drizzle ORM**, **expo-speech**, and **OpenRouter** for AI word generation. No backend, no accounts: everything except the OpenRouter requests stays on the device.
+
+**Workflow:** set category, difficulty, word interval and session time → start → listen and write on paper → session ends → open the saved word list and self-check.
 
 ## Features
 
-- **Practice Sessions**: Select duration, category, and difficulty level
-- **AI Word Generation**: OpenRouter API integration for dynamic word selection
-- **Text-to-Speech**: Hear pronunciations (native TTS via `expo-speech`)
-- **Mistake Tracking**: Automatic tracking of misspelled words with statistics
-- **Offline Support**: Works without internet after initial setup; falls back to stored words
-- **Dashboard**: Real-time statistics (accuracy, sessions, practice time, words to review)
-- **Settings**: Configure API key, speech rate, default preferences, and data management
-
-## Stack
-
-- **Framework**: Expo 54 + React Native 0.81 + React 19
-- **Database**: Expo SQLite + Drizzle ORM
-- **AI**: OpenRouter API (configurable model)
-- **TTS**: expo-speech
-- **Secure Storage**: expo-secure-store
-- **Navigation**: expo-router 6 (tab-based)
+- **Practice**: categories (Everyday English, IELTS Listening, Education, Accommodation, Transport, Work, Places, Names, Custom, Adaptive), difficulty (Easy / Medium / Hard / Adaptive), word interval (5 / 10 / 15 / 30 s or custom) and session time (10 / 20 / 30 / 60 min or custom). Words are spoken automatically; Pause and one Replay per word are available. The screen stays awake during a session.
+- **Word Lists**: every session is saved with date/time, duration, category, difficulty and the complete list of words spoken. Search, category filters, per-word Correct / Retest marks, and "Retest marked words".
+- **Adaptive learning**: uses your history to pick words: the least practised category, a mix of difficulty levels, and a share of older words you have not heard recently, without immediate repeats.
+- **Offline fallback**: without an API key (or when OpenRouter fails) a built-in word bank is used and a notice explains why.
+- **Voice**: British / American / Australian accent, a choice of installed voices, and speech speed.
+- **Settings**: OpenRouter key (paste, test, save, remove; kept in the device's secure storage), model (checked against OpenRouter's model list, with a test call), defaults, and data management.
+- **History management**: delete today / last 7 / 30 / 90 days, delete all history, or clear all app data (with confirmation).
 
 ## Setup
 
-### 1. Install Dependencies
-
 ```bash
 npm install
-```
-
-### 2. Set Up Environment
-
-Create a `.env.local` file (optional, for local testing):
-```
-# Not needed for app — API key is saved in-app via Settings tab
-```
-
-### 3. Run on Android
-
-```bash
-npx expo run:android
-```
-
-Or use Expo Go:
-```bash
 npx expo start
 ```
 
-Then scan QR code with Expo Go or press `a` for Android.
+Open it in Expo Go, or build a development client (`npx expo run:android` / `npx expo run:ios`). Then open **Settings**, paste an OpenRouter key (https://openrouter.ai/keys) and press **Test**.
 
-### 4. Configure OpenRouter API Key
+Text-to-speech uses the voices installed on the device. If no voice exists for an accent, the app tells you and uses the default voice.
 
-1. Get an API key from [OpenRouter](https://openrouter.ai)
-2. Open the app → **Settings tab**
-3. Paste your API key and tap **Save & Test**
-4. Key is stored securely on device (native: `expo-secure-store`, web: fallback to settings table)
+## Project structure
 
-## Navigation
-
-**Bottom Tab Navigation:**
-- **Dashboard**: Session stats, accuracy, words to review, total practice time
-- **Practice**: Set up and run a spelling practice session
-- **Mistakes**: Search, filter, and review previously misspelled words
-- **Settings**: API key, speech rate, default preferences, data management
-
-## Database Schema
-
-- **words**: Vocabulary with category and difficulty
-- **sessions**: Practice sessions (duration, accuracy, attempts)
-- **attempts**: Individual word attempts (typed spelling, correctness)
-- **mistakes**: Tracked misspellings with wrong/correct counts and history
-- **settings**: User preferences (API key fallback, model, speech rate, etc.)
-
-## Practice Workflow
-
-1. **Setup**: Choose duration (5/10/15/20/30 min or custom), category, difficulty
-2. **Session**: Listen to word via TTS → Type spelling → Submit
-3. **Feedback**: See if correct/incorrect + reveal correct spelling
-4. **Results**: View accuracy, session stats, list of missed words
-5. **Mistakes**: System auto-tracks wrong answers; practice mistakes separately
-
-### Adaptive Mode
-
-- **Category**: Mix words from your mistakes (most wrong first)
-- **Difficulty**: Auto-scales based on overall accuracy
-
-## Offline Support
-
-If no internet or API key not set:
-- App still runs using stored words + previously tracked mistakes
-- Small notice shown during session
-- No new word generation from OpenRouter
-
-## Data Management
-
-**Delete options in Settings:**
-- Delete today's history
-- Delete last 7 / 30 / 90 days
-- Clear practice attempts, sessions, or mistakes separately
-- **Clear All Data**: Full reset (requires confirmation)
-
-## Development
-
-### TypeScript & Linting
-
-```bash
-npx tsc --noEmit
-npm run lint
+```
+app/
+  _layout.tsx            database gate, theme, stack
+  (tabs)/                Practice (index), Word Lists (history), Settings
+  session/[id].tsx       saved word list, marks, retest
+db/                      Drizzle schema, migrations, queries (sessions, history, settings)
+lib/
+  sessionRunner.ts       interval loop: speak, save, pause, replay, timer
+  wordPicker.ts          adaptive selection, repeat avoidance, offline fallback
+  openrouter.ts          word generation, key/model tests, typed errors, retries
+  tts.ts                 accents and voices
+components/              Card, Chip, PrimaryButton, Segmented, VoicePicker, ...
+constants/theme.ts       "IELTS Academic Focus" palette (light and dark)
+assets/stitch_ielts_spelling_practice_app/   design reference
 ```
 
-### Build Migration (if schema changes)
+## Database
+
+SQLite file `spelling.db` with three tables: `sessions`, `session_words` and `settings`. After changing `db/schema.ts`, generate a migration and register it in `db/migrations/migrations.js`:
 
 ```bash
 npx drizzle-kit generate --name <description>
 ```
 
-## Performance Notes
+## Checks
 
-- **SQLite**: Local queries are instant; limit result sets with `limit()` for large data
-- **TTS**: Non-blocking; speech is queued; use `Speech.stop()` to interrupt
-- **API Calls**: Word generation is cached per session to minimize OpenRouter usage
-- **Theme**: Automatic light/dark mode support via system preference
-
-## Future Enhancements
-
-- Export/import session data
-- Leaderboard (local)
-- Custom category upload (CSV)
-- Multi-language support
-- Streaks & achievements
-
-## License
-
-MIT
-
----
-
-**Listen → Type → Check → Save → Learn → Repeat**
+```bash
+npx tsc --noEmit
+npx eslint .
+npx expo-doctor
+```
