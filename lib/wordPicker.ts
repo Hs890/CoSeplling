@@ -1,220 +1,209 @@
-import { getDb } from '../db/client';
-import { words, attempts, mistakes } from '../db/schema';
-import { desc, eq, inArray } from 'drizzle-orm';
+import { CONCRETE_CATEGORIES } from './constants';
 import { generateWords } from './openrouter';
-import { getSetting } from '../db/queries/settings';
-import { upsertWords, getStoredWordsFiltered, WordItem } from '../db/queries/words';
+import { generateWordsGemini } from './gemini';
+import { SEED_WORDS } from './seedWords';
+import {
+  getCategoryUsage,
+  getMasteredOrCompletedWords,
+  getPracticedWords,
+  getWordsMarkedAsAgain,
+} from '../db/queries/sessions';
 
-export interface BuildQueueOptions {
+const DAY_MS = 24 * 60 * 60 * 1000;
+/** Look-back window for "least practised category". */
+const USAGE_WINDOW_MS = 30 * DAY_MS;
+
+const MIXED_DIFFICULTY = 'a mix of Easy (about 30%), Medium (about 40%) and Hard (about 30%) words';
+
+export interface SessionTargets {
+  /** Category name used for the AI prompt and the built-in bank. */
   category: string;
-  difficulty: string;
-  customCategoryText?: string;
-  apiKey?: string;
-  model?: string;
-  sessionWordIds?: number[];
-  mode?: 'normal' | 'mistakes_only';
+  /** Label stored on the session, e.g. "Adaptive → Transport". */
+  label: string;
+  /** Difficulty wording for the AI prompt. */
+  difficultyPrompt: string;
+  /** Difficulty used to filter the built-in bank; null = any. */
+  seedDifficulty: string | null;
+  /** Category or difficulty is Adaptive: mix in older practised words. */
+  adaptive: boolean;
 }
 
 /**
- * Computes adaptive difficulty based on recent attempt accuracy.
+ * Resolves the user's choices into concrete targets.
+ * Adaptive category = the category practised least in the last 30 days.
+ * Adaptive difficulty = a mix of all levels.
  */
-export async function getAdaptiveDifficulty(): Promise<'Easy' | 'Medium' | 'Hard'> {
-  try {
-    const db = getDb();
-    const recentAttempts = await db
-      .select({ isCorrect: attempts.isCorrect })
-      .from(attempts)
-      .orderBy(desc(attempts.createdAt))
-      .limit(12);
-
-    if (recentAttempts.length < 3) {
-      return 'Medium'; // Default baseline
-    }
-
-    const correctCount = recentAttempts.filter((a) => a.isCorrect).length;
-    const accuracy = correctCount / recentAttempts.length;
-
-    if (accuracy >= 0.8) return 'Hard';
-    if (accuracy <= 0.5) return 'Easy';
-    return 'Medium';
-  } catch {
-    return 'Medium';
-  }
-}
-
-/**
- * Computes adaptive category based on categories with the highest mistake rate.
- */
-export async function getAdaptiveCategory(): Promise<string> {
-  try {
-    const db = getDb();
-    const allMistakes = await db
-      .select({
-        category: words.category,
-        wrongCount: mistakes.wrongCount,
-      })
-      .from(mistakes)
-      .innerJoin(words, eq(mistakes.wordId, words.id))
-      .orderBy(desc(mistakes.wrongCount))
-      .limit(10);
-
-    if (allMistakes.length > 0) {
-      // Find category with most mistakes
-      const categoryCounts: Record<string, number> = {};
-      for (const m of allMistakes) {
-        if (m.category && m.category !== 'Adaptive' && m.category !== 'Custom') {
-          categoryCounts[m.category] = (categoryCounts[m.category] || 0) + m.wrongCount;
-        }
-      }
-
-      const sortedCategories = Object.entries(categoryCounts).sort((a, b) => b[1] - a[1]);
-      if (sortedCategories.length > 0) {
-        return sortedCategories[0][0];
-      }
-    }
-
-    return 'IELTS Listening';
-  } catch {
-    return 'IELTS Listening';
-  }
-}
-
-/**
- * Builds a session queue of words with database IDs.
- */
-export async function buildSessionQueue(
+export async function resolveTargets(
   category: string,
   difficulty: string,
-  apiKey?: string,
-  model?: string,
-  sessionWordIds: number[] = [],
-  mode: 'normal' | 'mistakes_only' = 'normal',
   customCategoryText?: string
-): Promise<WordItem[]> {
-  const db = getDb();
-  const queueSize = 20;
-  const lastNToExclude = 15;
+): Promise<SessionTargets> {
+  let target = category;
+  let label = category;
 
-  try {
-    // 1. If mistakes-only mode, prioritize mistakes table
-    if (mode === 'mistakes_only') {
-      const allMistakes = await db
-        .select({
-          id: words.id,
-          word: words.word,
-          wrongCount: mistakes.wrongCount,
-        })
-        .from(mistakes)
-        .innerJoin(words, eq(mistakes.wordId, words.id))
-        .orderBy(desc(mistakes.wrongCount));
-
-      const filtered = allMistakes.filter((w) => !sessionWordIds.includes(w.id));
-      if (filtered.length > 0) {
-        return filtered.slice(0, queueSize).map((w) => ({ id: w.id, word: w.word }));
-      }
-      return allMistakes.slice(0, queueSize).map((w) => ({ id: w.id, word: w.word }));
-    }
-
-    // 2. Resolve Adaptive Difficulty & Category if requested
-    let targetDifficulty = difficulty;
-    if (difficulty === 'Adaptive') {
-      targetDifficulty = await getAdaptiveDifficulty();
-    }
-
-    let targetCategory = category;
-    if (category === 'Adaptive') {
-      targetCategory = await getAdaptiveCategory();
-    } else if (category === 'Custom' && customCategoryText && customCategoryText.trim().length > 0) {
-      targetCategory = customCategoryText.trim();
-    }
-
-    // 3. Real Repeat Avoidance: Gather actual recent words (strings)
-    const recentAttempts = await db
-      .select({ wordId: attempts.wordId })
-      .from(attempts)
-      .orderBy(desc(attempts.createdAt))
-      .limit(lastNToExclude);
-
-    const recentIds = Array.from(new Set([...sessionWordIds, ...recentAttempts.map((r) => r.wordId)]));
-    
-    let excludeWordStrings: string[] = [];
-    if (recentIds.length > 0) {
-      const recentWordRows = await db
-        .select({ word: words.word })
-        .from(words)
-        .where(inArray(words.id, recentIds.slice(0, 30)));
-      excludeWordStrings = recentWordRows.map((r) => r.word);
-    }
-
-    const queue: WordItem[] = [];
-    const usedWordSet = new Set<string>();
-
-    // 4. Try AI generation if API key is provided
-    if (apiKey && apiKey.trim().length > 0) {
-      const modelOverride = model || (await getSetting('model')) || 'openai/gpt-4o-mini';
-      const aiCount = Math.floor(queueSize * 0.7);
-
-      const aiResponse = await generateWords(apiKey, {
-        category: targetCategory,
-        difficulty: targetDifficulty,
-        count: aiCount,
-        exclude: excludeWordStrings,
-        model: modelOverride,
-      });
-
-      if (aiResponse.words && aiResponse.words.length > 0) {
-        // SAVE AI WORDS TO DATABASE and get back their real IDs!
-        const savedWords = await upsertWords(aiResponse.words, targetCategory, targetDifficulty);
-        for (const w of savedWords) {
-          if (!usedWordSet.has(w.word.toLowerCase())) {
-            usedWordSet.add(w.word.toLowerCase());
-            queue.push(w);
-          }
-        }
-      }
-    }
-
-    // 5. Fill remaining slots from Mistakes and Stored / Seed Words
-    if (queue.length < queueSize) {
-      // First try to add 2-3 mistakes from this or related category
-      const mistakeWords = await db
-        .select({ id: words.id, word: words.word })
-        .from(mistakes)
-        .innerJoin(words, eq(mistakes.wordId, words.id))
-        .orderBy(desc(mistakes.wrongCount))
-        .limit(10);
-
-      for (const m of mistakeWords) {
-        if (queue.length >= queueSize) break;
-        if (!usedWordSet.has(m.word.toLowerCase()) && !excludeWordStrings.includes(m.word)) {
-          usedWordSet.add(m.word.toLowerCase());
-          queue.push(m);
-        }
-      }
-    }
-
-    // 6. Fill any remaining queue capacity from local stored / seed words
-    if (queue.length < queueSize) {
-      const needed = queueSize - queue.length;
-      const stored = await getStoredWordsFiltered(
-        targetCategory,
-        targetDifficulty,
-        needed + 5,
-        Array.from(usedWordSet)
-      );
-
-      for (const item of stored) {
-        if (queue.length >= queueSize) break;
-        if (!usedWordSet.has(item.word.toLowerCase())) {
-          usedWordSet.add(item.word.toLowerCase());
-          queue.push(item);
-        }
-      }
-    }
-
-    return queue;
-  } catch (error) {
-    console.error('Failed to build queue, falling back to stored words:', error);
-    return await getStoredWordsFiltered('Everyday English', 'Medium', queueSize);
+  if (category === 'Custom') {
+    target = customCategoryText?.trim() || 'General English';
+    label = target;
+  } else if (category === 'Adaptive') {
+    const usage = await getCategoryUsage(Date.now() - USAGE_WINDOW_MS);
+    const least = [...CONCRETE_CATEGORIES].sort((a, b) => (usage[a] ?? 0) - (usage[b] ?? 0))[0];
+    target = least;
+    label = `Adaptive → ${least}`;
   }
+
+  const adaptiveDifficulty = difficulty === 'Adaptive';
+  return {
+    category: target,
+    label,
+    difficultyPrompt: adaptiveDifficulty ? MIXED_DIFFICULTY : difficulty,
+    seedDifficulty: adaptiveDifficulty ? null : difficulty,
+    adaptive: category === 'Adaptive' || adaptiveDifficulty,
+  };
 }
+
+export interface BatchRequest {
+  targets: SessionTargets;
+  apiKey?: string;
+  model?: string;
+  /** Every word already spoken or queued in this session (any case). */
+  usedWords: string[];
+  count: number;
+}
+
+export interface BatchResult {
+  words: string[];
+  /** Something the user should know (AI failed, bank too small, repeats used). */
+  notice?: string;
+}
+
+function shuffle<T>(items: T[]): T[] {
+  const out = [...items];
+  for (let i = out.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [out[i], out[j]] = [out[j], out[i]];
+  }
+  return out;
+}
+
+function tidy(word: string, category: string): string {
+  const w = word.trim();
+  return category === 'Names' ? w.charAt(0).toUpperCase() + w.slice(1) : w;
+}
+
+/**
+ * Returns up to `count` words, prioritizing words marked as 'again' (retest)
+ * and strictly excluding words that were already marked 'correct' or completed.
+ */
+export async function fetchWordBatch(req: BatchRequest): Promise<BatchResult> {
+  const { targets, apiKey, model, usedWords, count } = req;
+  const used = new Set(usedWords.map((w) => w.toLowerCase()));
+
+  // 1. Fetch words marked as 'again' (retest) and mastered/correct words
+  const [againWords, masteredWords, practiced] = await Promise.all([
+    getWordsMarkedAsAgain(),
+    getMasteredOrCompletedWords(),
+    getPracticedWords(1000),
+  ]);
+
+  const allPracticedSet = new Set(practiced.map((p) => p.word.toLowerCase()));
+  const againSet = new Set(againWords.map((w) => w.toLowerCase()));
+
+  // Words that should NOT repeat: mastered (correct) or practiced (unless marked again)
+  const excludeFromNew = new Set<string>([
+    ...Array.from(masteredWords),
+    ...Array.from(allPracticedSet).filter((w) => !againSet.has(w)),
+  ]);
+
+  const result: string[] = [];
+  const taken = new Set<string>();
+  const push = (w: string): boolean => {
+    const key = w.toLowerCase();
+    if (used.has(key) || taken.has(key)) return false;
+    taken.add(key);
+    result.push(tidy(w, targets.category));
+    return true;
+  };
+
+  let notice: string | undefined;
+
+  // PRIORITY 1: Words marked as 'Again' (retest)
+  if (againWords.length > 0) {
+    for (const w of shuffle(againWords)) {
+      if (result.length >= count) break;
+      push(w);
+    }
+  }
+
+  // PRIORITY 2: New words generated by AI (excluding mastered & already practiced words)
+  if (result.length < count && apiKey && apiKey.trim()) {
+    const exclude = [
+      ...usedWords.slice(-60),
+      ...Array.from(excludeFromNew).slice(-100),
+    ];
+    let aiWords: string[] = [];
+    let aiError: string | undefined;
+
+    const isGemini = apiKey.startsWith('AIza') || apiKey.length === 39;
+
+    if (isGemini) {
+      const geminiRes = await generateWordsGemini(apiKey, {
+        category: targets.category,
+        difficulty: targets.difficultyPrompt,
+        count: count - result.length + 10,
+        exclude,
+        model: model || 'gemini-3.8-flash',
+      });
+      aiWords = geminiRes.words;
+      aiError = geminiRes.error;
+    } else {
+      const openRouterRes = await generateWords(apiKey, {
+        category: targets.category,
+        difficulty: targets.difficultyPrompt,
+        count: count - result.length + 10,
+        exclude,
+        model,
+      });
+      aiWords = openRouterRes.words;
+      aiError = openRouterRes.error;
+    }
+
+    if (aiError) notice = `${aiError} Using the built-in word bank instead.`;
+
+    const fresh = aiWords.filter((w) => !excludeFromNew.has(w.toLowerCase()));
+    for (const w of fresh) {
+      if (result.length >= count) break;
+      push(w);
+    }
+  }
+
+  // PRIORITY 3: Built-in seed words from category that haven't been completed
+  if (result.length < count) {
+    const inCategory = SEED_WORDS.filter((s) => s.category === targets.category);
+    const levelMatch = (s: (typeof SEED_WORDS)[number]) =>
+      !targets.seedDifficulty || s.difficulty === targets.seedDifficulty;
+    const candidates = inCategory.filter(levelMatch).length > 0 ? inCategory.filter(levelMatch) : inCategory;
+
+    const unpracticedSeed = shuffle(candidates.map((s) => s.word)).filter(
+      (w) => !excludeFromNew.has(w.toLowerCase())
+    );
+
+    for (const w of unpracticedSeed) {
+      if (result.length >= count) break;
+      push(w);
+    }
+  }
+
+  // PRIORITY 4: Other built-in seed categories
+  if (result.length < count) {
+    const otherSeed = shuffle(SEED_WORDS.map((s) => s.word)).filter(
+      (w) => !excludeFromNew.has(w.toLowerCase())
+    );
+    for (const w of otherSeed) {
+      if (result.length >= count) break;
+      push(w);
+    }
+  }
+
+  return { words: shuffle(result).slice(0, count), notice };
+}
+
