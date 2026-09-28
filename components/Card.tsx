@@ -1,25 +1,45 @@
 import React from 'react';
-import { StyleSheet, View, ViewStyle } from 'react-native';
-import { Colors } from '@/constants/theme';
+import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
+import { Colors, Shadows } from '@/constants/theme';
 import { useColorScheme } from '@/hooks/use-color-scheme';
+
+type Tone = 'lowest' | 'low' | 'container' | 'high' | 'error';
 
 interface CardProps {
   children: React.ReactNode;
-  style?: ViewStyle;
+  style?: StyleProp<ViewStyle>;
+  /** Surface level from the design: lowest = white card, low/container/high = tinted panels. */
+  tone?: Tone;
+  radius?: number;
+  padding?: number;
+  /** Elevation from the design (cards use shadow-sm, the focal card shadow-md). */
+  elevation?: 'none' | 'sm' | 'md';
 }
 
-export function Card({ children, style }: CardProps) {
-  const colorScheme = useColorScheme();
-  const colors = Colors[colorScheme ?? 'light'];
+export function Card({
+  children,
+  style,
+  tone = 'lowest',
+  radius = 12,
+  padding = 16,
+  elevation = 'sm',
+}: CardProps) {
+  const colors = Colors[useColorScheme()];
+  const background = {
+    lowest: colors.card,
+    low: colors.containerLow,
+    container: colors.container,
+    high: colors.containerHigh,
+    error: colors.errorContainer,
+  }[tone];
 
   return (
     <View
       style={[
         styles.card,
-        {
-          backgroundColor: colorScheme === 'dark' ? '#1a1a1a' : '#FFFFFF',
-          borderColor: colors.icon,
-        },
+        { backgroundColor: background, borderRadius: radius, padding },
+        elevation === 'sm' && Shadows.sm,
+        elevation === 'md' && Shadows.md,
         style,
       ]}
     >
@@ -30,15 +50,6 @@ export function Card({ children, style }: CardProps) {
 
 const styles = StyleSheet.create({
   card: {
-    borderRadius: 12,
-    padding: 16,
-    marginHorizontal: 12,
-    marginVertical: 8,
-    borderWidth: 1,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 3,
+    marginBottom: 16,
   },
 });
