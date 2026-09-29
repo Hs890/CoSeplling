@@ -20,14 +20,7 @@
       },
       "edgeToEdgeEnabled": true,
       "predictiveBackGestureEnabled": false,
-      "permissions": [
-        "NOTIFICATIONS",
-        "SCHEDULE_EXACT_ALARM",
-        "USE_EXACT_ALARM",
-        "VIBRATE",
-        "WAKE_LOCK",
-        "RECEIVE_BOOT_COMPLETED"
-      ],
+      "permissions": [],
       "package": "com.hs11.trigger"
     },
     "web": {
@@ -37,11 +30,9 @@
     "plugins": [
       "expo-router",
       [
-        "expo-notifications",
+        "expo-sqlite",
         {
-          "icon": "./assets/images/icon.png",
-          "color": "#0a7ea4",
-          "sounds": []
+          "enableFTS": true
         }
       ],
       [
@@ -55,8 +46,7 @@
             "backgroundColor": "#000000"
           }
         }
-      ],
-      "@react-native-community/datetimepicker"
+      ]
     ],
     "experiments": {
       "typedRoutes": true,
