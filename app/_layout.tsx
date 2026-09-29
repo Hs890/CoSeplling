@@ -1,17 +1,15 @@
 import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
 import { Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import 'react-native-reanimated';
 
-import { LogBox } from 'react-native';
+import { LogBox, ActivityIndicator, View } from 'react-native';
 import { useColorScheme } from '@/hooks/use-color-scheme';
-import { requestPermissions } from '@/utils/notifications';
+import { initializeDb } from '@/db/client';
 
-// Expo Go SDK 53+ remote push warning ko ignore karein (Local alarms are fully supported)
 LogBox.ignoreLogs([
-  'Android Push notifications (remote notifications)',
-  '`expo-notifications` functionality is not fully supported',
+  'Non-serializable values were found in the navigation state',
 ]);
 
 export const unstable_settings = {
@@ -20,17 +18,32 @@ export const unstable_settings = {
 
 export default function RootLayout() {
   const colorScheme = useColorScheme();
+  const [dbReady, setDbReady] = useState(false);
 
-  // App open hone par notification permission maango
   useEffect(() => {
-    requestPermissions();
+    (async () => {
+      try {
+        await initializeDb();
+        setDbReady(true);
+      } catch (error) {
+        console.error('DB init failed:', error);
+        setDbReady(true); // Continue anyway
+      }
+    })();
   }, []);
+
+  if (!dbReady) {
+    return (
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <ActivityIndicator size="large" />
+      </View>
+    );
+  }
 
   return (
     <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
       <Stack>
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="modal" options={{ presentation: 'modal', title: 'Modal' }} />
       </Stack>
       <StatusBar style="auto" />
     </ThemeProvider>
