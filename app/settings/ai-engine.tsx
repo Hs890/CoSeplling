@@ -7,13 +7,12 @@ import { Txt } from '@/components/Txt';
 import { Colors } from '@/constants/theme';
 import { useColorScheme } from '@/hooks/use-color-scheme';
 import { testGeminiKey } from '@/lib/gemini';
-import { describeError, testApiKey } from '@/lib/openrouter';
 import { deleteApiKey, getActiveProvider, getApiKey, saveApiKey, type AiProvider } from '@/lib/secureKey';
 import { speakWord } from '@/lib/tts';
 import * as Haptics from 'expo-haptics';
 import { useFocusEffect, useRouter } from 'expo-router';
 import { useCallback, useState } from 'react';
-import { Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
+import { ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
 
 type Busy = 'save' | 'speech' | null;
 type Feedback = { tone: 'ok' | 'error'; text: string } | null;
@@ -43,16 +42,7 @@ export default function AiEngineScreen() {
         setSelectedProvider(activeProv);
         setSavedProvider(activeProv);
 
-        let k = await getApiKey(activeProv).catch(() => null);
-        // Try other provider if first one is empty
-        if (!k) {
-          const other: AiProvider = activeProv === 'gemini' ? 'openrouter' : 'gemini';
-          k = await getApiKey(other).catch(() => null);
-          if (k) {
-            setSelectedProvider(other);
-            setSavedProvider(other);
-          }
-        }
+        const k = await getApiKey(activeProv).catch(() => null);
         setSavedKey(k?.trim() || null);
         setKeyInput('');
         setChangingKey(false);
@@ -71,21 +61,16 @@ export default function AiEngineScreen() {
     setFeedback(null);
 
     try {
-      if (selectedProvider === 'gemini') {
-        await testGeminiKey(key);
-      } else {
-        await testApiKey(key);
-      }
-      await saveApiKey(key, selectedProvider);
+      await testGeminiKey(key);
+      await saveApiKey(key, 'gemini');
       setSavedKey(key);
       setSavedProvider(selectedProvider);
       setKeyInput('');
       setChangingKey(false);
-      const label = selectedProvider === 'gemini' ? 'Google Gemini (Free)' : 'OpenRouter';
-      setFeedback({ tone: 'ok', text: `✓ ${label} key save ho gayi!` });
+      setFeedback({ tone: 'ok', text: '✓ Google Gemini key save ho gayi!' });
       Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success).catch(() => { });
     } catch (err: any) {
-      const msg = describeError(err) || err?.message || 'Key verify nahi ho saki.';
+      const msg = err?.message || 'Key verify nahi ho saki.';
       setFeedback({ tone: 'error', text: msg });
       Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error).catch(() => { });
     } finally {
@@ -95,7 +80,6 @@ export default function AiEngineScreen() {
 
   const doDeleteKey = async () => {
     await deleteApiKey('gemini').catch(() => { });
-    await deleteApiKey('openrouter').catch(() => { });
     setSavedKey(null);
     setKeyInput('');
     setChangingKey(false);
@@ -132,7 +116,7 @@ export default function AiEngineScreen() {
                 <View style={{ flex: 1 }}>
                   <Txt variant="labelLg" color="text">{maskKey(savedKey)}</Txt>
                   <Txt variant="bodyMd" color="textSecondary" style={{ marginTop: 2 }}>
-                    {savedProvider === 'gemini' ? 'Google Gemini (Free)' : 'OpenRouter'} · Secure
+                    Google Gemini (Free) · Secure
                   </Txt>
                 </View>
                 <View style={[styles.okDot, { backgroundColor: '#22c55e' }]} />
@@ -157,54 +141,22 @@ export default function AiEngineScreen() {
           ) : (
             /* ── Input state ─────────────────────────────── */
             <>
-              {/* Provider selector — manual, no auto-detect */}
-              <Txt variant="labelSm" color="textSecondary" style={{ marginBottom: 8 }}>
-                Pehle apna provider chunein:
-              </Txt>
               <View style={styles.providerRow}>
-                <Pressable
-                  onPress={() => { setSelectedProvider('gemini'); setFeedback(null); }}
+                <View
                   style={[
                     styles.providerBtn,
-                    {
-                      backgroundColor: selectedProvider === 'gemini' ? colors.primaryContainer : colors.background,
-                      borderColor: selectedProvider === 'gemini' ? colors.primary : colors.outlineVariant,
-                    },
+                    { backgroundColor: colors.primaryContainer, borderColor: colors.primary },
                   ]}
                 >
-                  <Icon name="auto-awesome" size={16} color={selectedProvider === 'gemini' ? 'primary' : 'text'} />
+                  <Icon name="auto-awesome" size={16} color="primary" />
                   <View>
-                    <Txt variant="labelMd" style={{ color: selectedProvider === 'gemini' ? colors.primary : colors.text, fontWeight: '700' }}>
+                    <Txt variant="labelMd" style={{ color: colors.primary, fontWeight: '700' }}>
                       Google Gemini
                     </Txt>
                     <Txt variant="labelSm" style={{ color: '#22c55e', fontSize: 10, fontWeight: '700' }}>FREE</Txt>
                   </View>
-                  {selectedProvider === 'gemini' && (
-                    <Icon name="check-circle" size={16} color="primary" />
-                  )}
-                </Pressable>
-
-                <Pressable
-                  onPress={() => { setSelectedProvider('openrouter'); setFeedback(null); }}
-                  style={[
-                    styles.providerBtn,
-                    {
-                      backgroundColor: selectedProvider === 'openrouter' ? colors.containerLow : colors.background,
-                      borderColor: selectedProvider === 'openrouter' ? colors.outline : colors.outlineVariant,
-                    },
-                  ]}
-                >
-                  <Icon name="key" size={16} color={selectedProvider === 'openrouter' ? 'text' : 'text'} />
-                  <View>
-                    <Txt variant="labelMd" style={{ color: colors.text, fontWeight: '700' }}>
-                      OpenRouter
-                    </Txt>
-                    <Txt variant="labelSm" style={{ color: colors.textSecondary, fontSize: 10 }}>Free & Paid</Txt>
-                  </View>
-                  {selectedProvider === 'openrouter' && (
-                    <Icon name="check-circle" size={16} color="text" />
-                  )}
-                </Pressable>
+                  <Icon name="check-circle" size={16} color="primary" />
+                </View>
               </View>
 
               {/* Key Input */}
@@ -214,9 +166,7 @@ export default function AiEngineScreen() {
                   color: colors.text,
                   borderColor: colors.outlineVariant,
                 }]}
-                placeholder={selectedProvider === 'gemini'
-                  ? 'AIzaSy... (Google AI Studio key)'
-                  : 'sk-or-... (OpenRouter key)'}
+                placeholder="AIzaSy... (Google AI Studio key)"
                 placeholderTextColor={colors.outline}
                 value={keyInput}
                 onChangeText={(t) => { setKeyInput(t); setFeedback(null); }}

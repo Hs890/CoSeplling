@@ -21,8 +21,7 @@ import { Icon, type IconName } from '@/components/Icon';
 import { Txt } from '@/components/Txt';
 import { PrimaryButton } from '@/components/PrimaryButton';
 import { setSetting } from '@/db/queries/settings';
-import { saveApiKey, detectProvider } from '@/lib/secureKey';
-import { describeError, testApiKey } from '@/lib/openrouter';
+import { saveApiKey } from '@/lib/secureKey';
 import { testGeminiKey } from '@/lib/gemini';
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
@@ -99,13 +98,6 @@ export default function OnboardingScreen() {
     } catch {}
   };
 
-  const handleOpenOpenRouter = async () => {
-    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light).catch(() => {});
-    try {
-      await WebBrowser.openBrowserAsync('https://openrouter.ai/keys');
-    } catch {}
-  };
-
   const handleTestApiKey = async () => {
     const trimmed = apiKey.trim();
     if (!trimmed) {
@@ -116,28 +108,17 @@ export default function OnboardingScreen() {
     setKeyStatus(null);
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light).catch(() => {});
     try {
-      const isGemini = detectProvider(trimmed) === 'gemini';
-      if (isGemini) {
-        await testGeminiKey(trimmed);
-        await saveApiKey(trimmed, 'gemini');
-        setKeyStatus({
-          tone: 'ok',
-          message: 'Google Gemini key verified successfully! (Free & Unlimited)',
-        });
-      } else {
-        const info = await testApiKey(trimmed);
-        await saveApiKey(trimmed, 'openrouter');
-        const creditText = info.remaining === null ? 'Active' : `$${info.remaining.toFixed(2)} remaining`;
-        setKeyStatus({
-          tone: 'ok',
-          message: `OpenRouter key verified (${creditText})! Saved.`,
-        });
-      }
+      await testGeminiKey(trimmed);
+      await saveApiKey(trimmed, 'gemini');
+      setKeyStatus({
+        tone: 'ok',
+        message: 'Google Gemini key verified successfully! (Free & Unlimited)',
+      });
       Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success).catch(() => {});
     } catch (err: any) {
       setKeyStatus({
         tone: 'error',
-        message: describeError(err) || err.message || 'Verification failed. Please check the key.',
+        message: err.message || 'Verification failed. Please check the key.',
       });
       Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error).catch(() => {});
     } finally {
@@ -204,7 +185,7 @@ export default function OnboardingScreen() {
       {
         icon: 'record-voice-over',
         title: 'AI Audio & Pronunciation',
-        desc: 'Listen to native pronunciations powered by OpenRouter audio models with customizable voices.',
+        desc: 'Listen to native pronunciations powered by your phone speech engine with customizable voices.',
       },
       {
         icon: 'history-edu',
@@ -277,7 +258,7 @@ export default function OnboardingScreen() {
           AI Vocabulary Setup (Free)
         </Txt>
         <Txt variant="bodyMd" style={styles.sectionSubtitle}>
-          Connect Google Gemini (100% Free) or OpenRouter to generate infinite spelling word lists
+          Connect Google Gemini (100% Free) to generate infinite spelling word lists
         </Txt>
       </View>
 
@@ -320,7 +301,7 @@ export default function OnboardingScreen() {
           </View>
           <View style={{ flex: 1 }}>
             <Txt variant="labelLg" color="text">Paste & Test Below</Txt>
-            <Txt variant="bodyMd" color="textSecondary">Auto-detects Gemini or OpenRouter. You can also skip for now.</Txt>
+            <Txt variant="bodyMd" color="textSecondary">You can also skip for now.</Txt>
           </View>
         </View>
       </View>
@@ -328,7 +309,7 @@ export default function OnboardingScreen() {
       {/* Input Box */}
       <View style={[styles.inputBoxCard, { backgroundColor: colors.containerLow, borderColor: colors.outlineVariant }]}>
         <Txt variant="labelSm" color="textSecondary" style={{ marginBottom: 6, fontWeight: '700' }}>
-          GOOGLE GEMINI OR OPENROUTER API KEY (OPTIONAL)
+          GOOGLE GEMINI API KEY (OPTIONAL)
         </Txt>
         <TextInput
           value={apiKey}
@@ -336,7 +317,7 @@ export default function OnboardingScreen() {
             setApiKey(txt);
             setKeyStatus(null);
           }}
-          placeholder="AIzaSy... or sk-or-v1-..."
+          placeholder="AIzaSy..."
           placeholderTextColor="#888888"
           autoCapitalize="none"
           autoCorrect={false}
