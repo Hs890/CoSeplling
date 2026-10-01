@@ -1,5 +1,4 @@
 import { CONCRETE_CATEGORIES } from './constants';
-import { generateWords } from './openrouter';
 import { generateWordsGemini } from './gemini';
 import { SEED_WORDS } from './seedWords';
 import {
@@ -143,29 +142,16 @@ export async function fetchWordBatch(req: BatchRequest): Promise<BatchResult> {
     let aiWords: string[] = [];
     let aiError: string | undefined;
 
-    const isGemini = apiKey.startsWith('AIza') || apiKey.length === 39;
-
-    if (isGemini) {
-      const geminiRes = await generateWordsGemini(apiKey, {
-        category: targets.category,
-        difficulty: targets.difficultyPrompt,
-        count: count - result.length + 10,
-        exclude,
-        model: model || 'gemini-3.8-flash',
-      });
-      aiWords = geminiRes.words;
-      aiError = geminiRes.error;
-    } else {
-      const openRouterRes = await generateWords(apiKey, {
-        category: targets.category,
-        difficulty: targets.difficultyPrompt,
-        count: count - result.length + 10,
-        exclude,
-        model,
-      });
-      aiWords = openRouterRes.words;
-      aiError = openRouterRes.error;
-    }
+    const geminiRes = await generateWordsGemini(apiKey, {
+      category: targets.category,
+      difficulty: targets.difficultyPrompt,
+      count: count - result.length + 10,
+      exclude,
+      // Only use a stored model if it is a Gemini one (older installs may hold an OpenRouter id).
+      model: model?.startsWith('gemini') ? model : undefined,
+    });
+    aiWords = geminiRes.words;
+    aiError = geminiRes.error;
 
     if (aiError) notice = `${aiError} Using the built-in word bank instead.`;
 

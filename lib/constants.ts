@@ -43,5 +43,3 @@ export const SPEECH_RATES = [0.75, 0.85, 1.0, 1.15, 1.25, 1.5] as const;
 export const MIN_SPEECH_RATE = 0.75;
 export const MAX_SPEECH_RATE = 1.5;
 
-export const DEFAULT_MODEL = 'openai/gpt-4o-mini';
-export const OPENROUTER_API_URL = 'https://openrouter.ai/api/v1';

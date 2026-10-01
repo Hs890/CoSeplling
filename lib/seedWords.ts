@@ -5,7 +5,7 @@
 }
 
 /**
- * Built-in word bank used when there is no API key or OpenRouter is unreachable.
+ * Built-in word bank used when there is no API key or Gemini is unreachable.
  * Roughly 15 words per category and difficulty; duplicates within a category are removed.
  */
 export const SEED_WORDS: SeedWord[] = [

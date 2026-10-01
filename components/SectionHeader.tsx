@@ -6,7 +6,7 @@ import { Txt } from '@/components/Txt';
 interface SectionHeaderProps {
   icon: IconName;
   title: string;
-  /** Small text on the right (current selection, hint, "OpenRouter"...). */
+  /** Small text on the right (current selection, hint, "Gemini"...). */
   right?: string;
   rightTone?: 'textSecondary' | 'secondary' | 'primary';
   /** "form" = 14px label above a control, "section" = 20px heading (Settings). */

@@ -108,7 +108,7 @@ export default function SettingsScreen() {
                 </View>
               </View>
               <Txt variant="labelSm" color="textSecondary">
-                OpenRouter API key & LLM model configuration
+                Google Gemini API key configuration
               </Txt>
             </View>
             <Icon name="chevron-right" size={20} color="primary" />
@@ -135,7 +135,7 @@ export default function SettingsScreen() {
                 Welcome Tour & API Guide
               </Txt>
               <Txt variant="labelSm" color="textSecondary">
-                View features breakdown and OpenRouter setup instructions
+                View features breakdown and Gemini setup instructions
               </Txt>
             </View>
             <Icon name="chevron-right" size={20} color="primary" />

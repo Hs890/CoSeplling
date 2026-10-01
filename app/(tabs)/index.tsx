@@ -324,7 +324,7 @@ export default function DashboardScreen() {
           <ErrorModal
             visible={showApiKeyError}
             title="API Key Required"
-            message="An OpenRouter API key is needed to start a session. Go to Settings → AI Engine to add your key."
+            message="A Google Gemini API key is needed to start a session. Go to Settings → AI Engine to add your key."
             settingsHref="/settings/ai-engine"
             onClose={() => setShowApiKeyError(false)}
           />

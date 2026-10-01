@@ -203,7 +203,7 @@ export default function PrivacyScreen() {
             </Txt>
           </View>
           <Txt variant="bodyMd" color="textSecondary" style={{ marginTop: 4 }}>
-            Wipes all sessions, word lists, practice settings, and your OpenRouter API key.
+            Wipes all sessions, word lists, practice settings, and your Gemini API key.
           </Txt>
           <PrimaryButton
             label="Clear All App Data"
